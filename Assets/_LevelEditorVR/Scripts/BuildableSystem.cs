@@ -8,6 +8,7 @@ public class BuildableSystem : MonoBehaviour
     [SerializeField] private LayerMask _raycastLayerMask;
     [SerializeField] private LayerMask _deletableLayerMask;         // which game objects can be deleted
     [SerializeField] private Transform _buildableOutline;
+    [SerializeField] private float _rotateSpeed = 100f;
 
     private LevelEditorInputActions _inputActions;
     private int _currentBuildableIndex = 0;
@@ -43,6 +44,10 @@ public class BuildableSystem : MonoBehaviour
 
             // move the outline to the hit position
             _buildableOutline.position = _hit.point;
+
+            // read controller input and rotate on the y axis;
+            float horizontalValue = _inputActions.LevelEditor.Rotate.ReadValue<Vector2>().x;
+            _buildableOutline.Rotate(0, -horizontalValue * _rotateSpeed * Time.deltaTime, 0);
         }
         else
         {

@@ -2644,6 +2644,15 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""1da72e9c-401a-4a7c-94a8-f4ee6cc8c03f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -2666,6 +2675,17 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Delete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c702aa51-90fb-4992-b108-822ce15d513b"",
+                    ""path"": ""<XRController>{LeftHand}/{Primary2DAxis}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2844,6 +2864,7 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
         m_LevelEditor = asset.FindActionMap("LevelEditor", throwIfNotFound: true);
         m_LevelEditor_Create = m_LevelEditor.FindAction("Create", throwIfNotFound: true);
         m_LevelEditor_Delete = m_LevelEditor.FindAction("Delete", throwIfNotFound: true);
+        m_LevelEditor_Rotate = m_LevelEditor.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3961,12 +3982,14 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
     private List<ILevelEditorActions> m_LevelEditorActionsCallbackInterfaces = new List<ILevelEditorActions>();
     private readonly InputAction m_LevelEditor_Create;
     private readonly InputAction m_LevelEditor_Delete;
+    private readonly InputAction m_LevelEditor_Rotate;
     public struct LevelEditorActions
     {
         private @LevelEditorInputActions m_Wrapper;
         public LevelEditorActions(@LevelEditorInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Create => m_Wrapper.m_LevelEditor_Create;
         public InputAction @Delete => m_Wrapper.m_LevelEditor_Delete;
+        public InputAction @Rotate => m_Wrapper.m_LevelEditor_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_LevelEditor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3982,6 +4005,9 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
             @Delete.started += instance.OnDelete;
             @Delete.performed += instance.OnDelete;
             @Delete.canceled += instance.OnDelete;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
         private void UnregisterCallbacks(ILevelEditorActions instance)
@@ -3992,6 +4018,9 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
             @Delete.started -= instance.OnDelete;
             @Delete.performed -= instance.OnDelete;
             @Delete.canceled -= instance.OnDelete;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
         public void RemoveCallbacks(ILevelEditorActions instance)
@@ -4156,5 +4185,6 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
     {
         void OnCreate(InputAction.CallbackContext context);
         void OnDelete(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }
