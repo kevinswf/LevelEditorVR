@@ -2653,6 +2653,15 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""NextBuildable"",
+                    ""type"": ""Button"",
+                    ""id"": ""369aaf86-1ece-4cda-8aff-cfab7b67f15d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -2686,6 +2695,17 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""258100ce-64f1-4eae-82fb-0c3c05cc5393"",
+                    ""path"": ""<XRController>{LeftHand}/{PrimaryButton}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextBuildable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2865,6 +2885,7 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
         m_LevelEditor_Create = m_LevelEditor.FindAction("Create", throwIfNotFound: true);
         m_LevelEditor_Delete = m_LevelEditor.FindAction("Delete", throwIfNotFound: true);
         m_LevelEditor_Rotate = m_LevelEditor.FindAction("Rotate", throwIfNotFound: true);
+        m_LevelEditor_NextBuildable = m_LevelEditor.FindAction("NextBuildable", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3983,6 +4004,7 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
     private readonly InputAction m_LevelEditor_Create;
     private readonly InputAction m_LevelEditor_Delete;
     private readonly InputAction m_LevelEditor_Rotate;
+    private readonly InputAction m_LevelEditor_NextBuildable;
     public struct LevelEditorActions
     {
         private @LevelEditorInputActions m_Wrapper;
@@ -3990,6 +4012,7 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
         public InputAction @Create => m_Wrapper.m_LevelEditor_Create;
         public InputAction @Delete => m_Wrapper.m_LevelEditor_Delete;
         public InputAction @Rotate => m_Wrapper.m_LevelEditor_Rotate;
+        public InputAction @NextBuildable => m_Wrapper.m_LevelEditor_NextBuildable;
         public InputActionMap Get() { return m_Wrapper.m_LevelEditor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4008,6 +4031,9 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
+            @NextBuildable.started += instance.OnNextBuildable;
+            @NextBuildable.performed += instance.OnNextBuildable;
+            @NextBuildable.canceled += instance.OnNextBuildable;
         }
 
         private void UnregisterCallbacks(ILevelEditorActions instance)
@@ -4021,6 +4047,9 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
+            @NextBuildable.started -= instance.OnNextBuildable;
+            @NextBuildable.performed -= instance.OnNextBuildable;
+            @NextBuildable.canceled -= instance.OnNextBuildable;
         }
 
         public void RemoveCallbacks(ILevelEditorActions instance)
@@ -4186,5 +4215,6 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
         void OnCreate(InputAction.CallbackContext context);
         void OnDelete(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
+        void OnNextBuildable(InputAction.CallbackContext context);
     }
 }

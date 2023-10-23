@@ -2631,6 +2631,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "NextBuildable",
+                    "type": "Button",
+                    "id": "369aaf86-1ece-4cda-8aff-cfab7b67f15d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2664,6 +2673,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "258100ce-64f1-4eae-82fb-0c3c05cc5393",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextBuildable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

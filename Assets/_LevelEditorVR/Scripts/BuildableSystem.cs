@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class BuildableSystem : MonoBehaviour
 {
@@ -7,12 +8,14 @@ public class BuildableSystem : MonoBehaviour
     [SerializeField] private BuildableListSO _buildableListSO;      // list of possible buildables, used to instantiate actual game objects
     [SerializeField] private LayerMask _raycastLayerMask;
     [SerializeField] private LayerMask _deletableLayerMask;         // which game objects can be deleted
-    [SerializeField] private Transform _buildableOutline;
+    [SerializeField] private Transform _buildableOutlineParent;
     [SerializeField] private float _rotateSpeed = 100f;
 
     private LevelEditorInputActions _inputActions;
+    private List<Transform> _buildableOutlines;                     // list of outlines existed in scene, used to enable/disable at runtime
+    private Transform _currentBuildableOutline;
     private int _currentBuildableIndex = 0;
-    private float _raycastDistance = 100f;
+    private float _raycastDistance = 100f;                          // no point in casting to infinity
     private RaycastHit _hit;
     private bool _hitting = false;
 
@@ -28,6 +31,17 @@ public class BuildableSystem : MonoBehaviour
         // bind input actions to callbacks
         _inputActions.LevelEditor.Create.performed += CreateBuildable;
         _inputActions.LevelEditor.Delete.performed += DeleteBuildable;
+        _inputActions.LevelEditor.NextBuildable.performed += NextBuildable;
+
+        // populate the buildable outline list
+        _buildableOutlines = new List<Transform>();
+        foreach (Transform outline in _buildableOutlineParent)
+        {
+            _buildableOutlines.Add(outline);
+        }
+
+        // assign the current outline  (assume order is the same as in BuildableList SO)
+        _currentBuildableOutline = _buildableOutlines[_currentBuildableIndex];
     }
 
     private void Update()
@@ -39,15 +53,15 @@ public class BuildableSystem : MonoBehaviour
             if (!_hitting)
             {
                 _hitting = true;
-                _buildableOutline.gameObject.SetActive(true);
+                _currentBuildableOutline.gameObject.SetActive(true);
             }
 
             // move the outline to the hit position
-            _buildableOutline.position = _hit.point;
+            _currentBuildableOutline.position = _hit.point;
 
             // read controller input and rotate on the y axis;
             float horizontalValue = _inputActions.LevelEditor.Rotate.ReadValue<Vector2>().x;
-            _buildableOutline.Rotate(0, -horizontalValue * _rotateSpeed * Time.deltaTime, 0);
+            _currentBuildableOutline.Rotate(0, -horizontalValue * _rotateSpeed * Time.deltaTime, 0);
         }
         else
         {
@@ -55,7 +69,7 @@ public class BuildableSystem : MonoBehaviour
             if (_hitting)
             {
                 _hitting = false;
-                _buildableOutline.gameObject.SetActive(false);
+                _currentBuildableOutline.gameObject.SetActive(false);
             }
         }
     }
@@ -64,7 +78,7 @@ public class BuildableSystem : MonoBehaviour
     {
         // instantiate the buildable at the raycast hit outline location
         if (_hitting)
-            Instantiate(_buildableListSO.Buildables[_currentBuildableIndex].Prefab, _buildableOutline.position, _buildableOutline.rotation);
+            Instantiate(_buildableListSO.Buildables[_currentBuildableIndex].Prefab, _currentBuildableOutline.position, _currentBuildableOutline.rotation);
     }
 
     private void DeleteBuildable(InputAction.CallbackContext context)
@@ -74,5 +88,18 @@ public class BuildableSystem : MonoBehaviour
         {
             Destroy(_hit.transform.gameObject);
         }
+    }
+
+    private void NextBuildable(InputAction.CallbackContext context)
+    {
+        // disable the current outline
+        _currentBuildableOutline.gameObject.SetActive(false);
+
+        // get the next buildable index (with cycle)
+        _currentBuildableIndex = ++_currentBuildableIndex % _buildableListSO.TotalBuildables;
+
+        // enable the outline
+        _currentBuildableOutline = _buildableOutlines[_currentBuildableIndex];
+        _currentBuildableOutline.gameObject.SetActive(true);
     }
 }
