@@ -156,7 +156,10 @@ MonoBehaviour:
   _buildableListSO: {fileID: 11400000, guid: 89625a2d165934c4699922181dca9f43, type: 2}
   _raycastLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
+  _deletableLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   _buildableOutline: {fileID: 119592565}
 --- !u!4 &114207189
 Transform:

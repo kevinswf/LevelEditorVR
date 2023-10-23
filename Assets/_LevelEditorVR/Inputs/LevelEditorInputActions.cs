@@ -2635,6 +2635,15 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Delete"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c9db7e1-739c-49a4-a959-7128db972784"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -2646,6 +2655,17 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Create"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8dffc0bc-6f5d-4b2b-81c4-d7534db0c1de"",
+                    ""path"": ""<XRController>{LeftHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2823,6 +2843,7 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
         // LevelEditor
         m_LevelEditor = asset.FindActionMap("LevelEditor", throwIfNotFound: true);
         m_LevelEditor_Create = m_LevelEditor.FindAction("Create", throwIfNotFound: true);
+        m_LevelEditor_Delete = m_LevelEditor.FindAction("Delete", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3939,11 +3960,13 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
     private readonly InputActionMap m_LevelEditor;
     private List<ILevelEditorActions> m_LevelEditorActionsCallbackInterfaces = new List<ILevelEditorActions>();
     private readonly InputAction m_LevelEditor_Create;
+    private readonly InputAction m_LevelEditor_Delete;
     public struct LevelEditorActions
     {
         private @LevelEditorInputActions m_Wrapper;
         public LevelEditorActions(@LevelEditorInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Create => m_Wrapper.m_LevelEditor_Create;
+        public InputAction @Delete => m_Wrapper.m_LevelEditor_Delete;
         public InputActionMap Get() { return m_Wrapper.m_LevelEditor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3956,6 +3979,9 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
             @Create.started += instance.OnCreate;
             @Create.performed += instance.OnCreate;
             @Create.canceled += instance.OnCreate;
+            @Delete.started += instance.OnDelete;
+            @Delete.performed += instance.OnDelete;
+            @Delete.canceled += instance.OnDelete;
         }
 
         private void UnregisterCallbacks(ILevelEditorActions instance)
@@ -3963,6 +3989,9 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
             @Create.started -= instance.OnCreate;
             @Create.performed -= instance.OnCreate;
             @Create.canceled -= instance.OnCreate;
+            @Delete.started -= instance.OnDelete;
+            @Delete.performed -= instance.OnDelete;
+            @Delete.canceled -= instance.OnDelete;
         }
 
         public void RemoveCallbacks(ILevelEditorActions instance)
@@ -4126,5 +4155,6 @@ public partial class @LevelEditorInputActions: IInputActionCollection2, IDisposa
     public interface ILevelEditorActions
     {
         void OnCreate(InputAction.CallbackContext context);
+        void OnDelete(InputAction.CallbackContext context);
     }
 }
