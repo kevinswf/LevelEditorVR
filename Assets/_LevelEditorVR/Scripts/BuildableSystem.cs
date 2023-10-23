@@ -15,6 +15,7 @@ public class BuildableSystem : MonoBehaviour
     private LevelEditorInputActions _inputActions;
     private List<Transform> _buildableOutlines;                     // list of outlines existed in scene, used to enable/disable at runtime
     private Transform _currentBuildableOutline;
+    private Vector3 _currentOutlineOffset;
     private int _currentBuildableIndex = 0;
     private float _raycastDistance = 100f;                          // no point in casting to infinity
     private RaycastHit _hit;
@@ -43,6 +44,7 @@ public class BuildableSystem : MonoBehaviour
 
         // assign the current outline  (assume order is the same as in BuildableList SO)
         _currentBuildableOutline = _buildableOutlines[_currentBuildableIndex];
+        _currentOutlineOffset = _currentBuildableOutline.GetComponent<BuildableOutline>().OutlineOffset;
     }
 
     private void Update()
@@ -55,10 +57,18 @@ public class BuildableSystem : MonoBehaviour
             {
                 _hitting = true;
                 _currentBuildableOutline.gameObject.SetActive(true);
+                _currentOutlineOffset = _currentBuildableOutline.GetComponent<BuildableOutline>().OutlineOffset;
             }
 
+            // offset the outline from the hit point so it doesn't intersect with existing objects
+            Vector3 pos = _hit.point;
+            pos += Vector3.Scale(_hit.normal, _currentOutlineOffset);
+
+            // floor to place on ground
+            pos = new Vector3(pos.x, Mathf.Floor(pos.y), pos.z);
+
             // move the outline to the hit position
-            _currentBuildableOutline.position = _hit.point;
+            _currentBuildableOutline.position = pos;
 
             // read controller input and rotate on the y axis;
             float horizontalValue = _inputActions.LevelEditor.Rotate.ReadValue<Vector2>().x;
@@ -102,5 +112,8 @@ public class BuildableSystem : MonoBehaviour
         // enable the outline
         _currentBuildableOutline = _buildableOutlines[_currentBuildableIndex];
         _currentBuildableOutline.gameObject.SetActive(true);
+
+        // update the outline offset
+        _currentOutlineOffset = _currentBuildableOutline.GetComponent<BuildableOutline>().OutlineOffset;
     }
 }
