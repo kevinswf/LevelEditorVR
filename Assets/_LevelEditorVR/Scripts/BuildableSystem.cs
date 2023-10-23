@@ -9,6 +9,7 @@ public class BuildableSystem : MonoBehaviour
     [SerializeField] private LayerMask _raycastLayerMask;
     [SerializeField] private LayerMask _deletableLayerMask;         // which game objects can be deleted
     [SerializeField] private Transform _buildableOutlineParent;
+    [SerializeField] private Transform _levelEditorParent;      // instantiate all buildables as child of this, so easier to manage and save
     [SerializeField] private float _rotateSpeed = 100f;
 
     private LevelEditorInputActions _inputActions;
@@ -78,7 +79,7 @@ public class BuildableSystem : MonoBehaviour
     {
         // instantiate the buildable at the raycast hit outline location
         if (_hitting)
-            Instantiate(_buildableListSO.Buildables[_currentBuildableIndex].Prefab, _currentBuildableOutline.position, _currentBuildableOutline.rotation);
+            Instantiate(_buildableListSO.Buildables[_currentBuildableIndex].Prefab, _currentBuildableOutline.position, _currentBuildableOutline.rotation, _levelEditorParent);
     }
 
     private void DeleteBuildable(InputAction.CallbackContext context)

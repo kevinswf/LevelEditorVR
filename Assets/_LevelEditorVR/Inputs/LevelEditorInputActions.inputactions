@@ -2640,6 +2640,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SaveLevel",
+                    "type": "Button",
+                    "id": "d0618a82-97f7-469a-8d20-1b580b7f5b1e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2684,6 +2693,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "NextBuildable",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2aa7e0e8-1f58-49bc-82f9-6ae569f8a2fb",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SaveLevel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

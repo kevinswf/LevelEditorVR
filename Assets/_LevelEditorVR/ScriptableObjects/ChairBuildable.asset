@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1858dda861382bc49a2d6a342129b9ff, type: 3}
   m_Name: ChairBuildable
   m_EditorClassIdentifier: 
+  _id: 1
   _name: Chair
   _prefab: {fileID: 9045911661106270030, guid: a18d0cc37ffa1d54593b1ccc6be29d85, type: 3}
