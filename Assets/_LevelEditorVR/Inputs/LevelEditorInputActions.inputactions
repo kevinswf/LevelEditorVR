@@ -1,5 +1,5 @@
 {
-    "name": "XRI Default Input Actions",
+    "name": "LevelEditorInputActions",
     "maps": [
         {
             "name": "XRI Head",
@@ -2596,6 +2596,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pinch Gap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "LevelEditor",
+            "id": "baf41ec3-5023-423e-bd2a-bcff9178e9f1",
+            "actions": [
+                {
+                    "name": "Create",
+                    "type": "Button",
+                    "id": "503229a7-4ffa-4b66-ac55-c5be8d2da563",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "30b94ff8-e589-4caf-b09b-870ec56c77b5",
+                    "path": "<XRController>{LeftHand}/triggerPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
